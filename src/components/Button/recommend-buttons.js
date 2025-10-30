@@ -33,9 +33,16 @@ module.exports = new Component({
                 const { GENRE_IDS } = require("../../services/TMDBService");
                 const { EmbedBuilder } = require("discord.js");
 
-                // Show loading
+                // Show loading with fun messages
+                const tryAgainMessages = [
+                    '🎲 *Ooh, let me find you something else!*',
+                    '✨ *Aha! I know another great one...*',
+                    '🍿 *Okay okay, how about THIS one?*',
+                    '🎬 *Wait wait, you\'ll LOVE this next one!*',
+                    '🎯 *One more gem coming right up!*'
+                ];
                 await interaction.editReply({
-                    content: '🎲 Finding another perfect match...',
+                    content: tryAgainMessages[Math.floor(Math.random() * tryAgainMessages.length)],
                     embeds: [],
                     components: []
                 });
@@ -84,10 +91,17 @@ module.exports = new Component({
                 const randomMovie = filteredMovies[Math.floor(Math.random() * Math.min(10, filteredMovies.length))];
                 const movieDetails = await tmdbService.getMovieDetails(randomMovie.tmdbId);
 
-                // Create recommendation embed
+                // Create recommendation embed with personality
+                const titles = [
+                    `🎬 How About This? ${movieDetails.title}`,
+                    `✨ Ooh! Try ${movieDetails.title}`,
+                    `🍿 You'll Love This: ${movieDetails.title}`,
+                    `🎯 Perfect Pick: ${movieDetails.title}`,
+                    `💫 Check This Out: ${movieDetails.title}`
+                ];
                 const recommendEmbed = new EmbedBuilder()
                     .setColor('#00FF00')
-                    .setTitle(`🎬 I Recommend: ${movieDetails.title}`)
+                    .setTitle(titles[Math.floor(Math.random() * titles.length)])
                     .setURL(movieDetails.imdbId ? `https://www.imdb.com/title/${movieDetails.imdbId}/` : `https://www.themoviedb.org/movie/${movieDetails.tmdbId}`)
                     .setDescription(
                         `${movieDetails.tagline ? `*"${movieDetails.tagline}"*\n\n` : ''}` +
@@ -149,9 +163,15 @@ module.exports = new Component({
                     });
                 }
 
-                // Search for torrents
+                // Search for torrents with personality
+                const searchMessages = [
+                    '🔍 *Finding the best quality for you...*',
+                    '🎬 *Hunting down those streams...*',
+                    '✨ *Let me grab those links...*',
+                    '🍿 *Getting everything ready...*'
+                ];
                 await interaction.editReply({
-                    content: '🔍 Searching for torrents...',
+                    content: searchMessages[Math.floor(Math.random() * searchMessages.length)],
                     embeds: [],
                     components: []
                 });
