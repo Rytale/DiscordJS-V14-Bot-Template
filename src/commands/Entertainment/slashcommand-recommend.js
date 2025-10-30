@@ -43,9 +43,9 @@ module.exports = new ApplicationCommand({
             // Step 1: Ask for genre preference
             const genreEmbed = new EmbedBuilder()
                 .setColor('#FFD700')
-                .setTitle('🎬 Movie Recommendation - Step 1/3')
-                .setDescription('**What genre are you in the mood for?**\n\nSelect a genre below to help me find the perfect movie for you!')
-                .setFooter({ text: 'Step 1 of 3 • Genre Selection' });
+                .setTitle('🎬 Ooh, Movie Time! - Step 1/3')
+                .setDescription('**What vibes are we going for today? 🍿**\n\nPick a genre and I\'ll find you something *amazing*!\n\n*Pro tip: Trust your gut feeling~*')
+                .setFooter({ text: 'Step 1 of 3 • Let\'s find your perfect match! ✨' });
 
             const genreMenu = new StringSelectMenuBuilder()
                 .setCustomId('recommend-genre')

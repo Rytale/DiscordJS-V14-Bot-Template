@@ -38,9 +38,9 @@ module.exports = new Component({
                 // Step 2: Ask for rating preference
                 const ratingEmbed = new EmbedBuilder()
                     .setColor('#FFD700')
-                    .setTitle('🎬 Movie Recommendation - Step 2/3')
-                    .setDescription('**What kind of movie quality are you looking for?**\n\nChoose your preferred rating range!')
-                    .setFooter({ text: 'Step 2 of 3 • Rating Preference' });
+                    .setTitle('⭐ Ooh, Good Choice! - Step 2/3')
+                    .setDescription(`**Okay so you want ${value}... Nice! 😎**\n\nNow, are we going for *critically acclaimed* or just *pure fun*?\n\n*Psst... even "okay" movies can be hidden gems!*`)
+                    .setFooter({ text: 'Step 2 of 3 • Quality check! ✨' });
 
                 const ratingMenu = new StringSelectMenuBuilder()
                     .setCustomId('recommend-rating')
@@ -68,9 +68,9 @@ module.exports = new Component({
                 // Step 3: Ask for release year preference
                 const yearEmbed = new EmbedBuilder()
                     .setColor('#FFD700')
-                    .setTitle('🎬 Movie Recommendation - Step 3/3')
-                    .setDescription('**When should the movie be from?**\n\nChoose your preferred time period!')
-                    .setFooter({ text: 'Step 3 of 3 • Release Period' });
+                    .setTitle('📅 Almost There! - Step 3/3')
+                    .setDescription('**Last question! Fresh off the press or a classic?**\n\nSometimes the best movies are the ones nobody talks about anymore~ 🎞️\n\n*This is it... then I\'ll blow your mind with the PERFECT pick!*')
+                    .setFooter({ text: 'Step 3 of 3 • The final piece! 🎯' });
 
                 const yearMenu = new StringSelectMenuBuilder()
                     .setCustomId('recommend-year')
@@ -95,8 +95,15 @@ module.exports = new Component({
                 client.recommendData.set(interaction.user.id, userData);
 
                 // Show loading
+                const loadingMessages = [
+                    '🎬 *shuffling through my favorites...*',
+                    '🍿 *consulting my movie database...*',
+                    '✨ *finding something PERFECT for you...*',
+                    '🎯 *aha! I know just the thing...*',
+                    '🎪 *picking out a real gem...*'
+                ];
                 await interaction.editReply({
-                    content: '🎬 Finding the perfect movie for you...',
+                    content: loadingMessages[Math.floor(Math.random() * loadingMessages.length)],
                     embeds: [],
                     components: []
                 });
@@ -143,18 +150,28 @@ module.exports = new Component({
                 // Get full details
                 const movieDetails = await tmdbService.getMovieDetails(randomMovie.tmdbId);
 
-                // Create recommendation embed
+                // Create recommendation embed with personality
+                const whyMessages = {
+                    action: 'Your adrenaline is gonna LOVE this! 💥',
+                    comedy: 'Get ready to laugh your socks off! 😂',
+                    drama: 'Grab the tissues, this one hits different! 🎭',
+                    scifi: 'Your mind is about to be BLOWN! 🚀',
+                    horror: 'Sweet dreams~ Just kidding, you won\'t sleep! 👻',
+                    romance: 'Aww, this one\'s gonna warm your heart! ❤️'
+                };
+
                 const recommendEmbed = new EmbedBuilder()
                     .setColor('#00FF00')
-                    .setTitle(`🎬 I Recommend: ${movieDetails.title}`)
+                    .setTitle(`🎬 OMG YES! Watch This: ${movieDetails.title}`)
                     .setURL(movieDetails.imdbId ? `https://www.imdb.com/title/${movieDetails.imdbId}/` : `https://www.themoviedb.org/movie/${movieDetails.tmdbId}`)
                     .setDescription(
                         `${movieDetails.tagline ? `*"${movieDetails.tagline}"*\n\n` : ''}` +
                         `${movieDetails.overview}\n\n` +
-                        `**Why this movie?**\n` +
-                        `✓ Matches your ${genre} preference\n` +
-                        `✓ ${rating === 'high' ? 'Highly rated' : rating === 'good' ? 'Well-rated' : 'Quality'} movie\n` +
-                        `✓ ${year === 'new' ? 'Recent release' : year === 'recent' ? 'Modern film' : 'Great pick'}`
+                        `**✨ Why I picked this for you:**\n` +
+                        `${whyMessages[genre] || 'This is gonna be good!'}\n` +
+                        `• Perfect ${genre} vibes! 🎯\n` +
+                        `• ${rating === 'high' ? 'Critics and fans LOVE it!' : rating === 'good' ? 'Solid crowd-pleaser!' : 'A fun watch!'}\n` +
+                        `• ${year === 'new' ? 'Fresh and current!' : year === 'recent' ? 'Modern classic!' : 'Timeless pick!'}`
                     )
                     .addFields(
                         { name: '⭐ Rating', value: `${movieDetails.rating}/10`, inline: true },
@@ -164,7 +181,7 @@ module.exports = new Component({
                         { name: '🎬 Director', value: movieDetails.director, inline: true },
                         { name: '👥 Cast', value: movieDetails.cast, inline: true }
                     )
-                    .setFooter({ text: 'Click "Watch Now" to stream • Click "Try Again" for another recommendation' });
+                    .setFooter({ text: 'Love it? Hit "Watch Now"! Not feeling it? "Try Again" for more magic! ✨' });
 
                 if (movieDetails.poster) {
                     recommendEmbed.setImage(movieDetails.poster);
