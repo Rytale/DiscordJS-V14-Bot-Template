@@ -2,7 +2,7 @@
   "name": "discordjs-v14-bot-template",
   "version": "3.0.0",
   "description": "A Discord bot commands, components and events handler based on discord.js v14 and fully written in JavaScript.",
-  "main": "src/index.js",
+  "main": "bot/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ."
