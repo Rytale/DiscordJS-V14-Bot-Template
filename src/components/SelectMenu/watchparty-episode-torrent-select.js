@@ -42,9 +42,19 @@ module.exports = new Component({
                 });
             }
 
-            // Update message to show processing
+            // Create a nice loading embed
+            const loadingEmbed = new EmbedBuilder()
+                .setColor('#FFA500')
+                .setTitle('🎬 Preparing Your Watch Party')
+                .setDescription(`**${movieData.displayTitle}**\n*${selectedTorrent.quality} • ${selectedTorrent.size}*`)
+                .addFields(
+                    { name: '⏳ Status', value: '```Adding torrent to Real-Debrid...```', inline: false }
+                )
+                .setFooter({ text: 'This may take a few moments' })
+                .setTimestamp();
+
             await interaction.editReply({
-                content: `🔄 Processing ${selectedTorrent.quality} torrent for ${movieData.displayTitle}...\n⏳ Adding to Real-Debrid...`,
+                embeds: [loadingEmbed],
                 components: []
             });
 
@@ -54,23 +64,31 @@ module.exports = new Component({
             // Get streaming link from Real-Debrid
             let streamingUrl;
             try {
-                await interaction.editReply({
-                    content: `🔄 Processing ${selectedTorrent.quality} torrent...\n⏳ Getting streaming link...`
-                });
+                loadingEmbed.setFields(
+                    { name: '⏳ Status', value: '```Getting streaming link...```', inline: false }
+                );
+                await interaction.editReply({ embeds: [loadingEmbed] });
                 
                 streamingUrl = await rdService.getStreamingLink(selectedTorrent.magnetLink);
             } catch (error) {
                 console.error('Real-Debrid error:', error);
+                const errorEmbed = new EmbedBuilder()
+                    .setColor('#FF0000')
+                    .setTitle('❌ Failed to Process Torrent')
+                    .setDescription(`**Error:** ${error.message}\n\nPlease try a different quality or check your Real-Debrid account.`)
+                    .setFooter({ text: 'Tip: Try selecting a different torrent' });
+                
                 return await interaction.editReply({
-                    content: `❌ Failed to process torrent: ${error.message}\n\nPlease try a different quality or check your Real-Debrid account.`,
+                    embeds: [errorEmbed],
                     components: []
                 });
             }
 
             // Create watch party link
-            await interaction.editReply({
-                content: `🔄 Processing ${selectedTorrent.quality} torrent...\n⏳ Creating watch party...`
-            });
+            loadingEmbed.setFields(
+                { name: '⏳ Status', value: '```Creating watch party room...```', inline: false }
+            );
+            await interaction.editReply({ embeds: [loadingEmbed] });
 
             const watchPartyService = new WatchPartyService();
             const watchPartyUrl = await watchPartyService.createRoom(streamingUrl, movieData.displayTitle);

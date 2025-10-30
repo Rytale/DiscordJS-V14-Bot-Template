@@ -1,157 +1,249 @@
-# <samp>DiscordJS-V14-Bot-Template</samp> v3
+# 🎬 Movie & TV Streaming Discord Bot
 
-A Discord bot commands, components and events handler based on **discord.js v14** and fully written in JavaScript.
+A feature-rich Discord bot for streaming movies and TV shows with friends using Real-Debrid and IMDb integration. Create watch parties, browse movie info, and stream high-quality content directly in Discord!
 
-Did you like the project? Click on the star button (⭐️) right above your screen, thank you!
+## ✨ Features
 
-## Features
-- Updated to the latest version of [discord.js v14.x](https://github.com/discordjs/discord.js/releases).
-- Supports all possible type of commands.
-    - Message commands.
-    - Application commands:
-        - Chat Input
-        - User context
-        - Message context
-- Handles components.
-    - Buttons
-    - Select menus
-    - Modals
-    - Autocomplete
-- Easy and simple to use.
-- Advanced command options.
-- Simple Database included (YAML).
+### 🎥 Watch Party System
+- **Create Watch Parties**: Generate instant watch party links using watchparty.me
+- **Real-Debrid Integration**: Convert torrents to high-speed streaming links
+- **Quality Selection**: Choose from 4K, 1080p, 720p, and more
+- **Movies & TV Shows**: Full support for both movies and episodic content
+- **Direct Streaming**: Get direct links for VLC, MPV, or any media player
 
-## Commands, Components, and Events structure:
-### Message commands:
+### 📺 Movie Information
+- **Detailed Info**: Get comprehensive information about any movie or TV show
+- **IMDb Integration**: Ratings, cast, crew, plot, awards, and more
+- **Live Search**: Autocomplete suggestions as you type
+- **Rich Embeds**: Beautiful, professional-looking embeds with posters
 
-[`Partial`](https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype).<br>
-`Awaitable` means the function might be **async**.
+### 🔍 Smart Search
+- **Autocomplete**: Real-time search suggestions from IMDb
+- **Flexible Queries**: Search by title or IMDb ID
+- **Smart Matching**: Handles compound words and variations
 
-```ts
-new MessageCommand({
-    command: {
-        name: string, // The command name
-        description?: string, // The command description (optional)
-        aliases?: string[], // The command aliases (optional)
-        permissions?: PermissionResolvable[], // The command permissions (optional)
-    },
-    options?: Partial<{
-        cooldown: number, // The command cooldown, in milliseconds
-        botOwner: boolean, // Bot owner can only run it? (true = yes, false = no)
-        guildOwner: boolean, // Guild owner can only run it? (true = yes, false = no)
-        botDevelopers: boolean, // Bot developers can only run it? (true = yes, false = no)
-        nsfw: boolean // The command contains NSFW content? (true = yes, false = no)
-    }>,
-    run: Awaitable<(client: DiscordBot, message: Message, args: string[]) => void> // The main function to execute the command
-});
+### 🎯 User Experience
+- **Professional Design**: Gold-themed embeds matching IMDb branding
+- **Easy Navigation**: Select menus for seasons, episodes, and quality
+- **Clear Instructions**: Step-by-step guidance throughout
+- **Error Handling**: Helpful error messages with suggestions
+
+## 📋 Commands
+
+### `/watchparty`
+Create a watch party for movies or TV shows
+- **Options:**
+  - `title`: Search by movie/show title (with autocomplete)
+  - `imdb_id`: Search by IMDb ID (e.g., tt1375666)
+
+**Examples:**
+```
+/watchparty title: Inception
+/watchparty imdb_id: tt1375666
+/watchparty title: Breaking Bad
 ```
 
-### Application commands (Chat input, User context, Message context):
+### `/movieinfo`
+Get detailed information about a movie or TV show
+- **Options:**
+  - `title`: Search by movie/show title (with autocomplete)
+  - `imdb_id`: Search by IMDb ID (e.g., tt1375666)
 
-[`APIApplicationCommand`](https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure), [`Partial`](https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype).<br>
-`Awaitable` means the function might be **async**.
-
-```ts
-new ApplicationCommand({
-    command: APIApplicationCommand,
-    options?: Partial<{
-        cooldown: number, // The command cooldown, in milliseconds
-        botOwner: boolean, // Bot owner can only run it? (true = yes, false = no)
-        guildOwner: boolean, // Guild owner can only run it? (true = yes, false = no)
-        botDevelopers: boolean, // Bot developers can only run it? (true = yes, false = no)
-    }>,
-    run: Awaitable<(client: DiscordBot, interaction: Interaction) => void> // The main function to execute the command
-});
+**Examples:**
+```
+/movieinfo title: The Matrix
+/movieinfo imdb_id: tt0133093
 ```
 
-### Components:
-#### Autocomplete:
+## 🚀 Setup
 
-`Awaitable` means the function might be **async**.
+### Prerequisites
+1. **Discord Bot Token** - [Discord Developer Portal](https://discord.com/developers/applications)
+2. **Real-Debrid Account** - [Real-Debrid](https://real-debrid.com/) (Required)
+3. **OMDb API Key** - [OMDb API](https://www.omdbapi.com/apikey.aspx) (Free tier available)
 
-```ts
-new AutocompleteComponent({
-    commandName: string,
-    run: Awaitable<(client: DiscordBot, interaction: AutocompleteInteraction) => void> // The main function to execute the command
-});
+### Installation
+
+1. **Clone the repository**
+```bash
+git clone <repository-url>
+cd DiscordJS-V14-Bot-Template
 ```
 
-#### Buttons, Select Menus, and Modals:
-
-[`Partial`](https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype).<br>
-`Awaitable` means the function might be **async**.
-
-```ts
-new Component({
-    customId: string,
-    type: 'modal' | 'select' | 'button',
-    options?: Partial<{
-        public: boolean // Other users can use the main interaction author button/select? (true = yes, false = no)
-    }>
-    run: Awaitable<(client: DiscordBot, interaction: Interaction) => void> // The main function to execute the command
-});
+2. **Install dependencies**
+```bash
+npm install
 ```
 
-### Events:
+3. **Configure environment variables**
 
-`Awaitable` means the function might be **async**.<br>
-`K` is a type parameter, extends `keyof ClientEvents`.
+Edit `.env` file:
+```env
+# Discord Bot Token
+CLIENT_TOKEN="your_discord_bot_token"
 
-```ts
-new Event({
-    event: K,
-    once?: boolean, // The event can only happen once? (true = yes, false = no)
-    run: Awaitable<(client: DiscordBot, ...args: ClientEvents[K]) => void>
-});
+# Real-Debrid API Key (Required)
+REAL_DEBRID_API_KEY="your_real_debrid_api_key"
+
+# OMDb API Key (Recommended)
+OMDB_API_KEY="your_omdb_api_key"
+
+# Watch2Gether API Key (Optional)
+W2G_API_KEY=""
 ```
 
-## Dependencies
-- **colors** → latest
-- **discord.js** → 14.13.0 or newer
-- **dotenv** → latest
-- **quick-yaml.db** → latest
+4. **Get your API keys**
+- **Real-Debrid**: Visit [https://real-debrid.com/apitoken](https://real-debrid.com/apitoken)
+- **OMDb**: Visit [https://www.omdbapi.com/apikey.aspx](https://www.omdbapi.com/apikey.aspx)
 
-> [!NOTE]
-> **Node.js v16.11.0** or newer is required to run **discord.js**.
+5. **Configure the bot**
 
-## Setup
-1. Install a code editor ([Visual Studio Code](https://code.visualstudio.com/Download) for an example).
-2. Download this project as a **.zip** file: [Download](https://github.com/TFAGaming/DiscordJS-V14-Bot-Template/archive/refs/heads/main.zip)
-3. Extract the **.zip** file into a normal folder.
-4. Open your code editor, click on **Open Folder**, and select the new created folder.
-5. Rename the following files:
+Edit `src/config.js`:
+```javascript
+development: {
+    enabled: true, // Set to false for global commands
+    guildId: 'your_guild_id_here',
+},
+users: {
+    ownerId: 'your_user_id_here',
+    developers: ['your_user_id_here']
+}
+```
 
-- `src/example.config.js` → `src/config.js`: Used for handler configuration.
-- `.env.example` → `.env`: Used for secrets, like the Discord bot token.
-- `example.database.yml` → `database.yml`: Used as a main file for the database.
-- `example.terminal.log` → `terminal.log`: Used as a clone of terminal (to save previous terminal messages).
+6. **Start the bot**
+```bash
+npm start
+```
 
-6. Fill all the required values in **config.js** and **.env**.
+## 🎮 Usage Guide
 
-> [!CAUTION]
-> Please remember not to share your Discord bot token! This will give access to attackers to do anything they want with your bot, so please keep the token in a safe place, which is the **.env** file.
+### Creating a Watch Party
 
-7. Initialize a new project: `npm init` (To skip every step, do `npm init -y`).
-8. Install all [required dependencies](#dependencies): `npm install colors discord.js dotenv quick-yaml.db`
+1. Use `/watchparty` and start typing a movie name
+2. Select from autocomplete suggestions
+3. The bot shows IMDb information
+4. **For Movies**: Select your preferred quality
+5. **For TV Shows**: 
+   - Select a season
+   - Select an episode
+   - Select quality
+6. Get your watch party link and direct stream link!
 
-9. Run the command `node .` or `npm run start` to start the bot.
-10. Enjoy! The bot should be online.
+### Getting Movie Information
 
-## Contributing
-Feel free to fork the repository and submit a new pull request if you wish to contribute to this project.
+1. Use `/movieinfo` and type a movie name
+2. Select from autocomplete suggestions
+3. View detailed information including:
+   - Plot, ratings, cast, crew
+   - Awards, box office, runtime
+   - Genres, languages, countries
+   - Direct link to create a watch party
 
-Before you submit a pull request, ensure you tested it and have no issues. Also, keep the same coding style, which means don't use many unnecessary spaces or tabs.
+## 🛠️ Technical Details
 
-Thank you to all the people who contributed to **DiscordJS-V14-Bot-Template**!
+### Architecture
+- **Discord.js v14**: Latest Discord API wrapper
+- **Real-Debrid API**: Torrent to streaming conversion
+- **Torrentio API**: Torrent indexing (same as Stremio)
+- **OMDb API**: IMDb data access
+- **watchparty.me**: Watch party room creation
 
-<img src="https://contrib.rocks/image?repo=TFAGaming/DiscordJS-V14-Bot-Template">
+### File Structure
+```
+src/
+├── services/              # API integrations
+│   ├── RealDebridService.js
+│   ├── IMDbService.js
+│   ├── TorrentService.js
+│   └── WatchPartyService.js
+├── commands/
+│   └── Entertainment/
+│       ├── slashcommand-watchparty.js
+│       └── slashcommand-movieinfo.js
+├── components/
+│   ├── SelectMenu/        # Interactive menus
+│   └── autocomplete/      # Search autocomplete
+└── client/                # Bot initialization
+```
 
-## Support
-Join our Discord server if you have any questions to ask, or if you have a problem with this project, you can go to the [issues section](https://github.com/TFAGaming/DiscordJS-V14-Bot-Template/issues) and submit a new issue.
+### Features in Detail
 
-<a href="https://discord.gg/E6VFACWu5V">
-  <img src="https://discord.com/api/guilds/918611797194465280/widget.png?style=banner3">
-</a>
+**Torrent Processing:**
+1. Search via Torrentio API
+2. Parse quality, size, seeders
+3. Add to Real-Debrid
+4. Get direct streaming URL
 
-## License
-[**GPL-3.0**](./LICENSE), General Public License v3
+**Watch Party Creation:**
+1. Generate watchparty.me URL
+2. Include video parameter
+3. Provide alternative direct link
+
+**Smart Search:**
+- Handles compound words (e.g., "madmax" → "mad max")
+- Tries multiple variations
+- Caches results for performance
+
+## 📊 Bot Status
+
+The bot rotates between these statuses:
+- 🎬 /watchparty for movies
+- 🍿 Streaming with friends
+- 📺 TV shows & movies
+- 🎥 /movieinfo for details
+- ⭐ Powered by Real-Debrid
+
+## 🔧 Troubleshooting
+
+### "No torrents found"
+- Try searching by IMDb ID instead
+- Some content may not be available
+- Check Real-Debrid availability
+
+### "Failed to process torrent"
+- Verify Real-Debrid API key
+- Check account status
+- Try different quality option
+
+### Autocomplete not working
+- Ensure OMDb API key is set
+- Check API rate limits
+- Wait for search to load
+
+### Watch party link issues
+- Use direct stream link as alternative
+- Copy link to VLC or similar player
+- Check if video URL is still valid
+
+## 📝 API Rate Limits
+
+- **OMDb Free**: 1,000 requests/day
+- **Real-Debrid**: Varies by account type
+- **Torrentio**: No official limits
+
+## 🤝 Contributing
+
+This bot is based on the DiscordJS-V14-Bot-Template. Feel free to fork and customize!
+
+## ⚠️ Legal Notice
+
+This bot is for personal use only. Ensure you have the rights to stream any content. Respect copyright laws in your jurisdiction. The developers are not responsible for misuse.
+
+## 📞 Support
+
+For issues or questions:
+- Check the troubleshooting section
+- Verify all API keys are correct
+- Check console logs for errors
+- Use `/reportbug` in Discord to report issues
+
+## 🎉 Credits
+
+- **Template**: DiscordJS-V14-Bot-Template by TFAGaming
+- **APIs**: Real-Debrid, OMDb, Torrentio
+- **Services**: watchparty.me
+- **Framework**: Discord.js v14
+
+---
+
+**Made with ❤️ for movie lovers and Discord communities**

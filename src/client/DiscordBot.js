@@ -24,9 +24,11 @@ class DiscordBot extends Client {
     login_attempts = 0;
     login_timestamp = 0;
     statusMessages = [
-        { name: 'Status 1', type: 4 },
-        { name: 'Status 2', type: 4 },
-        { name: 'Status 3', type: 4 }
+        { name: '🎬 /watchparty for movies', type: 2 },
+        { name: '🍿 Streaming with friends', type: 3 },
+        { name: '📺 TV shows & movies', type: 3 },
+        { name: '🎥 /movieinfo for details', type: 2 },
+        { name: '⭐ Powered by Real-Debrid', type: 3 }
     ];
 
     commands_handler = new CommandsHandler(this);
@@ -46,9 +48,9 @@ class DiscordBot extends Client {
             ],
             presence: {
                 activities: [{
-                    name: 'keep this empty',
-                    type: 4,
-                    state: 'DiscordJS-V14-Bot-Template v3'
+                    name: '🎬 /watchparty',
+                    type: 2,
+                    state: '🍿 Movie & TV Streaming Bot'
                 }]
             }
         });
