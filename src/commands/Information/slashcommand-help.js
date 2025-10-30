@@ -29,15 +29,14 @@ module.exports = new ApplicationCommand({
                 { name: '\u200B', value: '**━━━━━━━━━━━━━━━━━━━━**' },
                 { 
                     name: '🎥 Main Commands', 
-                    value: '**`/watchparty`** - Create watch parties for movies/shows\n' +
-                           '• Use autocomplete to search titles\n' +
-                           '• Select quality and episode\n' +
-                           '• Get instant streaming links\n\n' +
-                           '**`/movieinfo`** - Get detailed IMDb information\n' +
-                           '• Ratings, cast, plot, awards\n' +
-                           '• High-quality posters\n\n' +
-                           '**`/help`** - Show this help menu\n' +
-                           '**`/ping`** - Check bot latency',
+                    value: '**`/recommend`** - Get personalized suggestions\n' +
+                           '• Answer 3 questions • Get perfect match\n\n' +
+                           '**`/browse`** - Browse by category\n' +
+                           '• Popular, Action, Comedy, Sci-Fi, Horror, Drama\n\n' +
+                           '**`/watchparty`** - Create watch parties\n' +
+                           '• Search or use IMDb ID • Select quality\n\n' +
+                           '**`/movieinfo`** - Detailed IMDb info\n\n' +
+                           '**`/help`** - Show this menu • **`/ping`** - Check latency',
                     inline: false
                 },
                 { name: '\u200B', value: '**━━━━━━━━━━━━━━━━━━━━**' },
